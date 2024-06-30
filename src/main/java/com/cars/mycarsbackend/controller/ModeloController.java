@@ -4,13 +4,11 @@ import com.cars.mycarsbackend.dto.ModeloDTO;
 import com.cars.mycarsbackend.dto.ResponseDTO;
 import com.cars.mycarsbackend.model.Modelo;
 import com.cars.mycarsbackend.service.ModeloService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -27,10 +25,16 @@ public class ModeloController {
         return ResponseEntity.status(HttpStatus.CREATED).body(novoModelo);
     }
 
+
     @GetMapping
     public ResponseEntity<List<Modelo>> getModelos() {
         List<Modelo> modelos = modeloService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(modelos);
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getModelo(@PathVariable Long id) {
+        return ResponseEntity.ok().body(modeloService.getModelo(id));
     }
 
     @PutMapping("/{id}")
