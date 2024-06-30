@@ -1,7 +1,6 @@
 package com.cars.mycarsbackend.dto;
 
-import com.cars.mycarsbackend.model.Marca;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +17,6 @@ public class ModeloDTO {
     private Long marcaId;
     private String nome;
     private BigDecimal valorFipe;
+    @JsonProperty("nome_marca")
     private String nomeMarca;
 }

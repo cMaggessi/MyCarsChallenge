@@ -7,10 +7,11 @@ import com.cars.mycarsbackend.model.Modelo;
 import com.cars.mycarsbackend.repository.MarcaRepository;
 import com.cars.mycarsbackend.repository.ModeloRepository;
 import com.cars.mycarsbackend.service.ModeloService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ModeloServiceImpl implements ModeloService {
@@ -24,47 +25,60 @@ public class ModeloServiceImpl implements ModeloService {
     }
 
     @Override
-    public List<Modelo> findAll() {
-        return modeloRepository.findAll();
+    public List<ModeloDTO> findAll() {
+        List<Modelo> modelos = modeloRepository.findAll();
+        return modelos.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-
     @Override
-    public Modelo createModelo(ModeloDTO dto) {
-
+    public ModeloDTO createModelo(ModeloDTO dto) {
         Marca marca = marcaRepository.findById(dto.getMarcaId())
                 .orElseThrow(() -> new NotFoundException("Marca id: " + dto.getMarcaId() + " não encontrada."));
+
         Modelo newModel = new Modelo();
+        BeanUtils.copyProperties(dto, newModel); // Copy properties from DTO to entity
         newModel.setMarca(marca);
         newModel.setNome(dto.getNome().toUpperCase());
-        newModel.setValorFipe(dto.getValorFipe());
-        return modeloRepository.save(newModel);
+
+        Modelo savedModel = modeloRepository.save(newModel);
+        return convertToDTO(savedModel);
     }
 
-
     @Override
-    public Modelo getModelo(Long id) {
-        Optional<Modelo> optModl = modeloRepository.findById(id);
-        if(optModl.isEmpty()) {
-            throw new NotFoundException("Modelo id: "+id+" não encontrado.");
-        }
-        return optModl.get();
+    public ModeloDTO getModelo(Long id) {
+        Modelo modelo = getModeloEntity(id);
+        return convertToDTO(modelo);
     }
 
-
     @Override
-    public Modelo updateModelo(ModeloDTO dto) {
-        Modelo model = getModelo(dto.getId());
+    public ModeloDTO updateModelo(ModeloDTO dto) {
+        Modelo model = getModeloEntity(dto.getId());
+        BeanUtils.copyProperties(dto, model); // Copy properties from DTO to entity
         model.setNome(dto.getNome().toUpperCase());
-        model.setValorFipe(dto.getValorFipe());
-        return modeloRepository.save(model);
+        Modelo updatedModel = modeloRepository.save(model);
+        return convertToDTO(updatedModel);
     }
 
     @Override
-    public Modelo deleteModelo(Long id) {
-        Modelo modelDelete = getModelo(id);
-        modeloRepository.delete(modelDelete);
-        return modelDelete;
+    public ModeloDTO deleteModelo(Long id) {
+        Modelo modelo = getModeloEntity(id);
+        modeloRepository.delete(modelo);
+        return convertToDTO(modelo);
+    }
 
+    // Helper method to get Modelo entity by ID
+    private Modelo getModeloEntity(Long id) {
+        return modeloRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Modelo id: " + id + " não encontrado."));
+    }
+
+    // Convert Modelo entity to ModeloDTO
+    private ModeloDTO convertToDTO(Modelo modelo) {
+        ModeloDTO dto = new ModeloDTO();
+        BeanUtils.copyProperties(modelo, dto);
+        dto.setMarcaId(modelo.getMarca().getId());
+        return dto;
     }
 }

@@ -2,7 +2,6 @@ package com.cars.mycarsbackend.controller;
 
 import com.cars.mycarsbackend.dto.ModeloDTO;
 import com.cars.mycarsbackend.dto.ResponseDTO;
-import com.cars.mycarsbackend.model.Modelo;
 import com.cars.mycarsbackend.service.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,39 +14,37 @@ import java.util.List;
 @RequestMapping("/v1/cars/modelo")
 public class ModeloController {
 
-
     @Autowired
     ModeloService modeloService;
 
     @PostMapping
-    public ResponseEntity<Modelo> createModelo(@RequestBody ModeloDTO dto) {
-        Modelo novoModelo = modeloService.createModelo(dto);
+    public ResponseEntity<ModeloDTO> createModelo(@RequestBody ModeloDTO dto) {
+        ModeloDTO novoModelo = modeloService.createModelo(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoModelo);
     }
 
-
     @GetMapping
-    public ResponseEntity<List<Modelo>> getModelos() {
-        List<Modelo> modelos = modeloService.findAll();
+    public ResponseEntity<List<ModeloDTO>> getModelos() {
+        List<ModeloDTO> modelos = modeloService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(modelos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Modelo> getModelo(@PathVariable Long id) {
-        Modelo modelo = modeloService.getModelo(id);
+    public ResponseEntity<ModeloDTO> getModelo(@PathVariable Long id) {
+        ModeloDTO modelo = modeloService.getModelo(id);
         return ResponseEntity.ok().body(modelo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Modelo> updateModelo(@PathVariable Long id, @RequestBody ModeloDTO dto) {
+    public ResponseEntity<ModeloDTO> updateModelo(@PathVariable Long id, @RequestBody ModeloDTO dto) {
         dto.setId(id);
-        Modelo modeloAtualizado = modeloService.updateModelo(dto);
+        ModeloDTO modeloAtualizado = modeloService.updateModelo(dto);
         return ResponseEntity.status(HttpStatus.OK).body(modeloAtualizado);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> deleteModelo(@PathVariable Long id) {
-        Modelo deletedModelo = modeloService.deleteModelo(id);
+        ModeloDTO deletedModelo = modeloService.deleteModelo(id);
         ResponseDTO responseDTO = ResponseDTO.builder()
                 .message("Modelo " + deletedModelo.getId() + " deletado com sucesso!")
                 .statusCode(HttpStatus.OK.value())
