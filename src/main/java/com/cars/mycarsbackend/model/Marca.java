@@ -1,9 +1,6 @@
 package com.cars.mycarsbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -14,5 +11,6 @@ public class Marca {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name ="nome_marca")
     private String nomeMarca;
 }
