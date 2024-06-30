@@ -32,9 +32,10 @@ public class ModeloController {
         return ResponseEntity.status(HttpStatus.OK).body(modelos);
     }
 
-    @GetMapping({"{id}"})
-    public ResponseEntity<Object> getModelo(@PathVariable Long id) {
-        return ResponseEntity.ok().body(modeloService.getModelo(id));
+    @GetMapping("/{id}")
+    public ResponseEntity<Modelo> getModelo(@PathVariable Long id) {
+        Modelo modelo = modeloService.getModelo(id);
+        return ResponseEntity.ok().body(modelo);
     }
 
     @PutMapping("/{id}")
