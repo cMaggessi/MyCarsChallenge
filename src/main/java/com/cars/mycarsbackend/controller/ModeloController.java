@@ -35,6 +35,13 @@ public class ModeloController {
         return ResponseEntity.ok().body(modelo);
     }
 
+    @GetMapping("/marca")
+    public ResponseEntity<List<ModeloDTO>> getModelosByMarca(@RequestParam Long marca_id) {
+        List<ModeloDTO> modelos = modeloService.getModelosByMarca(marca_id);
+        return ResponseEntity.ok().body(modelos);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<ModeloDTO> updateModelo(@PathVariable Long id, @RequestBody ModeloDTO dto) {
         dto.setId(id);
