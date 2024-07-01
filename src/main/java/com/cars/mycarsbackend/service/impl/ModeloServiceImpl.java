@@ -62,6 +62,16 @@ public class ModeloServiceImpl implements ModeloService {
         return ModeloDTO.mapper(modelo);
     }
 
+    @Override
+    public List<ModeloDTO> getModelosByMarca(Long marcaId) {
+        Marca marca = findMarcaById(marcaId);
+        List<Modelo> modelos = modeloRepository.findByMarca(marca);
+        return modelos.stream()
+                .map(ModeloDTO::mapper)
+                .collect(Collectors.toList());
+
+    }
+
     private Modelo getModeloEntity(Long id) {
         return modeloRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Modelo com id: " + id + " não encontrado."));
