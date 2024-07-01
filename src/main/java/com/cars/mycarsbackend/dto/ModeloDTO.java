@@ -15,8 +15,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ModeloDTO {
     private Long id;
+    @JsonProperty("marca_id")
     private Long marcaId;
     private String nome;
+    @JsonProperty("valor_fipe")
     private BigDecimal valorFipe;
     @JsonProperty("nome_marca")
     private String nomeMarca;
