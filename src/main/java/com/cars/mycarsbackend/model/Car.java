@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,7 +24,7 @@ public class Car {
     @Column(name = "timestamp_cadastro")
     private Timestamp timestampCadastro;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "modelo_id", nullable = false)
     private Modelo modelo;
 
