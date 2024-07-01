@@ -51,7 +51,7 @@ public class ModeloController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseDTO> deleteModelo(@PathVariable Long id) {
-        ModeloDTO deletedModelo = modeloService.deleteModelo(id);
+        modeloService.deleteModelo(id);
         ResponseDTO responseDTO = ResponseDTO.builder()
                 .message("Modelo " + id + " deletado com sucesso!")
                 .statusCode(HttpStatus.OK.value())
