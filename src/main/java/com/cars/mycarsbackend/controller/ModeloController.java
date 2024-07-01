@@ -38,7 +38,7 @@ public class ModeloController {
     @PutMapping("/{id}")
     public ResponseEntity<ModeloDTO> updateModelo(@PathVariable Long id, @RequestBody ModeloDTO dto) {
         dto.setId(id);
-        ModeloDTO modeloAtualizado = modeloService.updateModelo(dto);
+        ModeloDTO modeloAtualizado = modeloService.updateModelo(id, dto);
         return ResponseEntity.status(HttpStatus.OK).body(modeloAtualizado);
     }
 
@@ -46,7 +46,7 @@ public class ModeloController {
     public ResponseEntity<ResponseDTO> deleteModelo(@PathVariable Long id) {
         ModeloDTO deletedModelo = modeloService.deleteModelo(id);
         ResponseDTO responseDTO = ResponseDTO.builder()
-                .message("Modelo " + deletedModelo.getId() + " deletado com sucesso!")
+                .message("Modelo " + id + " deletado com sucesso!")
                 .statusCode(HttpStatus.OK.value())
                 .httpStatus(HttpStatus.OK)
                 .build();
