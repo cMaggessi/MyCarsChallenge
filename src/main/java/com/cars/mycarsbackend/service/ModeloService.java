@@ -9,6 +9,6 @@ public interface ModeloService {
     ModeloDTO getModelo(Long id);
 
     ModeloDTO createModelo(ModeloDTO dto);
-    ModeloDTO updateModelo(ModeloDTO dto);
+    ModeloDTO updateModelo(Long id, ModeloDTO dto);
     ModeloDTO deleteModelo(Long id);
 }
