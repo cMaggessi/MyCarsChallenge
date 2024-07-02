@@ -1,7 +1,7 @@
 
 # Java Spring Boot MyCars
 
-A simple REST API web service that returns CRUD operation on cars, based on "Car", "Marca" and "Modelo".
+A simple REST API web service with CRUD operation on cars, based on "Car", "Marca" and "Modelo".
 
 
 
