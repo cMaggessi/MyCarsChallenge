@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MarcaServiceImpl implements MarcaService {
@@ -18,37 +18,46 @@ public class MarcaServiceImpl implements MarcaService {
     MarcaRepository marcaRepository;
 
     @Override
-    public List<Marca> findAll() {
-
-        return marcaRepository.findAll();
+    public List<MarcaDTO> findAll() {
+        List<Marca> marcas = marcaRepository.findAll();
+        return marcas.stream()
+                .map(MarcaDTO::mapper)
+                .collect(Collectors.toList());
     }
 
    @Override
-    public Marca getById(Long id) {
-    return marcaRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Marca id: " + id + " não encontrada."));
-    }
+    public MarcaDTO getById(Long id) {
+       Marca marca = getMarcaById(id);
+       return MarcaDTO.mapper(marca);
+   }
+
+
 
     @Override
-    public Marca updateMarca(MarcaDTO marcaDTO) {
-        Marca marca = getById(marcaDTO.getId());
+    public MarcaDTO updateMarca(MarcaDTO marcaDTO) {
+        Marca marca = getMarcaById(marcaDTO.getId());
         marca.setNomeMarca(marcaDTO.getNomeMarca());
-        return marcaRepository.save(marca);
+        marcaRepository.save(marca);
+        return MarcaDTO.mapper(marca);
     }
 
     @Override
-    public Marca createMarca(MarcaDTO marcaDTO) {
+    public MarcaDTO createMarca(MarcaDTO marcaDTO) {
         Marca newMarca = new Marca();
         newMarca.setNomeMarca(marcaDTO.getNomeMarca());
-        return marcaRepository.save(newMarca);
-
+        marcaRepository.save(newMarca);
+        return MarcaDTO.mapper(newMarca);
     }
 
     @Override
-    public Marca deleteMarca(Long id) {
-        Marca marcaDel = getById(id);
+    public void deleteMarca(Long id) {
+        Marca marcaDel = getMarcaById(id);
         marcaRepository.delete(marcaDel);
-        return marcaDel;
     }
 
+
+    private Marca getMarcaById(Long id) {
+        return marcaRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Marca id: " + id + " não encontrada."));
+    }
 }
