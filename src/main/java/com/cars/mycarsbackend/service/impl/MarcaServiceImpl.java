@@ -23,13 +23,10 @@ public class MarcaServiceImpl implements MarcaService {
         return marcaRepository.findAll();
     }
 
-    @Override
+   @Override
     public Marca getById(Long id) {
-        Optional<Marca> optMarca = marcaRepository.findById(id);
-        if (optMarca.isEmpty()) {
-            throw new NotFoundException("Marca id: "+id+" não encontrada.");
-        }
-        return optMarca.get();
+    return marcaRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Marca id: " + id + " não encontrada."));
     }
 
     @Override
